@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+#! /usr/bin/env ruby
 
 def wordify(infile)
   input = File.open(infile).read
@@ -42,6 +43,15 @@ def wordsort(words)
   end
 end
 
-words = wordify(ARGV[0])
-wordsort words
-puts words
+def main
+  if ARGV.length != 1
+    puts 'Wordsort takes a single, required argument containing the text to be sorted.'
+    exit(1)
+  end
+  words = wordify(ARGV[0])
+  wordsort words
+  outfile_name = ARGV[0].split('.')[0]
+  File.open(outfile_name + '-sorted.txt', 'w') { |file| file.puts words }
+end
+
+main
