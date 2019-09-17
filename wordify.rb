@@ -7,8 +7,7 @@ module Wordify
 
   def self.wordify
     input = read_input
-    words = input.scan(/\b\w*\S*\b/)
-    words.reject { |elem| elem == '' }
+    words = input.scan(/\w\w*\-*\w*/)
     puts words
   end
 end
