@@ -3,7 +3,7 @@
 
 def wordify(infile)
   input = File.open(infile).read
-  words = input.scan(/\w\w*\-*\w*/)
+  words = input.match(/(\d|[a-zA-Z])+(\d|[a-zA-Z]|-)*/)
   words
 end
 
