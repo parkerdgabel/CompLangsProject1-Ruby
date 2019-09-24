@@ -37,4 +37,12 @@ RSpec.describe Wordify do
       expect(actual).to eq([])
     end
   end
+
+  context 'with assignment spec example' do
+    it 'returns the assignment spec example return' do
+      infile = File.open("./wordify_data.txt").read
+      actual = Wordify.wordify infile
+      expect(actual).to eq(["Some", "made-up", "data", "over", "2", "0", "lines"])
+    end
+  end
 end

@@ -6,11 +6,22 @@ module Wordify
     $stdin.read
   end
 
+  def self.is_digit(word)
+    word[0].match?(/[0-9]/)
+  end
+
+  def self.is_alpha(word)
+    word[0].match?(/[a-zA-Z]/)
+  end
+
+  def self.is_valid_start(word)
+    is_alpha(word) || is_digit(word)
+  end
+
   def self.wordify(words_from_input)
-    invalid_characters = /[\\!@#\$%\^&\*\(\)\_\+=<>,\.;:'"{}]/
-    valid_start = /(\d|[a-zA-Z])/
-    words_from_input.split.select do |word|
-      word.match?(valid_start) && !word.match?(invalid_characters)
+    words = words_from_input.split("\s")
+    words.select do |word|
+      is_valid_start word
     end
   end
 end
