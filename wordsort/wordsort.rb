@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 #! /usr/bin/env ruby
 
-def wordify(infile)
-  input = File.open(infile).read
-  words = input.match(/(\d|[a-zA-Z])+(\d|[a-zA-Z]|-)*/)
-  words
+def wordify(words_from_input)
+  invalid_characters = /[\\!@#\$%\^&\*\(\)\_\+=<>,\.;:'"{}]/
+    valid_start = /(\d|[a-zA-Z])/
+    words_from_input.split.select do |word|
+      word.match?(valid_start) && !word.match?(invalid_characters)
+    end
 end
 
 def binary_search(words, word, low = 0, high = words.length - 1)
@@ -29,6 +31,9 @@ def binary_search(words, word, low = 0, high = words.length - 1)
 end
 
 def wordsort(words)
+  if words.empty?
+    return []
+  end
   i = 1
   until i >= words.count
     j = i - 1
@@ -48,10 +53,11 @@ def main
     puts 'Wordsort takes a single, required argument containing the text to be sorted.'
     exit(1)
   end
-  words = wordify(ARGV[0])
+  infile = File.open(ARGV[0])
+  words_from_input = infile.read
+  words = wordify(words_from_input)
   wordsort words
   outfile_name = ARGV[0].split('.')[0]
   File.open(outfile_name + '-sorted.txt', 'w') { |file| file.puts words }
 end
 
-main

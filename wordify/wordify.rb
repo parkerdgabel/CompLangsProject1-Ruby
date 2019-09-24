@@ -7,7 +7,7 @@ module Wordify
   end
 
   def self.wordify(words_from_input)
-    invalid_characters = /\\!@#\$%\^&\*\(\)_\+=<>,\.;:'"{}/
+    invalid_characters = /[\\!@#\$%\^&\*\(\)\_\+=<>,\.;:'"{}]/
     valid_start = /(\d|[a-zA-Z])/
     words_from_input.split.select do |word|
       word.match?(valid_start) && !word.match?(invalid_characters)
