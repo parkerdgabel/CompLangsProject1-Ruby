@@ -38,6 +38,12 @@ RSpec.describe Wordify do
     end
   end
 
+  context 'with word starting with weird characters' do
+    it 'returns just words' do
+      actual = Wordify.wordify "!hello_world"
+      expect(actual).to eq(['hello', 'world'])
+    end
+  end
   context 'with assignment spec example' do
     it 'returns the assignment spec example return' do
       infile = File.open("./wordify_data.txt").read

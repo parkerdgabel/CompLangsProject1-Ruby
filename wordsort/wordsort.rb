@@ -1,12 +1,41 @@
 # frozen_string_literal: true
 #! /usr/bin/env ruby
 
+def is_digit(char)
+  char.match?(/[0-9]/)
+end
+
+def is_alpha(char)
+  char.match?(/[a-zA-Z]/)
+end
+
+def is_valid_start(word)
+  is_alpha(word[0]) || is_digit(word[0])
+end
+
+def is_valid_middle(char)
+  is_alpha(char) || is_digit(char) || char == '-'
+end
+
 def wordify(words_from_input)
-  invalid_characters = /[\\!@#\$%\^&\*\(\)\_\+=<>,\.;:'"{}]/
-    valid_start = /(\d|[a-zA-Z])/
-    words_from_input.split.select do |word|
-      word.match?(valid_start) && !word.match?(invalid_characters)
+  words = words_from_input.split(/[\s\(\)!?]/)
+  words = words.select {|word| word != ''}
+  final_words = []
+  words.each do |word|
+    next unless is_valid_start word
+
+    temp_word = ''
+    word.each_char do |char|
+      if is_valid_middle char
+        temp_word += char
+      else
+        final_words << temp_word
+        temp_word = ''
+      end
     end
+    final_words << temp_word unless temp_word.empty?
+  end
+  final_words
 end
 
 def binary_search(words, word, low = 0, high = words.length - 1)
@@ -18,7 +47,9 @@ def binary_search(words, word, low = 0, high = words.length - 1)
     end
   end
 
-  return low if low > high
+  if low > high
+    return low
+  end
 
   mid = (low + high) / 2
   if words[mid] < word
@@ -31,21 +62,7 @@ def binary_search(words, word, low = 0, high = words.length - 1)
 end
 
 def wordsort(words)
-  if words.empty?
-    return []
-  end
-  i = 1
-  until i >= words.count
-    j = i - 1
-    word = words[i]
-    position = binary_search words, word
-    while j >= position
-      words[j + 1] = words[j]
-      j -= 1
-    end
-    words[j + 1] = word
-    i += 1
-  end
+  
 end
 
 def main
