@@ -8,12 +8,12 @@ class Concordance
     end
 
     def to_s
-      '(' + @line_number + ',' + @word_number + ')'
+      '(' + @line_number.to_s + ',' + @word_number.to_s + ')'
     end
   end
 
   def initialize
-    @hash = Hash.new([])
+    @hash = {}
   end
 
   def is_digit(char)
@@ -54,11 +54,13 @@ class Concordance
   end
 
   def concordance(infile_name)
+    @hash.clear
     line_number = 1
     File.readlines(infile_name).each do |line|
       words = wordify line
       word_number = 1
       words.each do |word|
+        @hash[word] = [] if @hash[word].nil?
         @hash[word] << ConcordanceTuple.new(line_number, word_number)
         word_number += 1
       end
@@ -68,19 +70,21 @@ class Concordance
 
   def format_tuple_string(vals)
     str = ""
-    vals.each { |tuple| str += tuple.to_s }
+    vals.each { |tuple| str += tuple.to_s + ' ' }
     str.rstrip
   end
 
   def length_of_longest_key
     keys = @hash.keys
-    max_word = keys.max { |a, b| a.length <=> b.length }
-    max_word.length
+    unless keys.empty?
+      max_word = keys.max { |a, b| a.length <=> b.length }
+      return max_word.length
+    end
   end
 
   def format_key_string(key, longest_length)
-    buffer = key.length - longest_length
-    whitespace = buffer * ' '
+    buffer = longest_length - key.length
+    whitespace = ' ' * buffer
     whitespace + key
   end
 
@@ -90,8 +94,13 @@ class Concordance
 
   def to_s
     str = ''
-    longest_key - length_of_longest_key
-    @hash.each { |key, val| str += format_key_val_string key, val, longest_key + '\n'}
+    longest_key = length_of_longest_key
+    unless @hash.empty?
+      @hash.keys.sort.each do |key|
+        str += format_key_val_string(key, @hash[key], longest_key) + "\n"
+      end
+    end
     str
   end
 end
+

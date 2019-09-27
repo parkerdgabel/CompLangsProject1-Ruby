@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Debug TestClocks",
+      "type": "Ruby",
+      "request": "launch",
+      "program": "${workspaceRoot}/clocks/testclocks.rb"
+    },
+    {
       "name": "RSpec - active spec file only",
       "type": "Ruby",
       "request": "launch",

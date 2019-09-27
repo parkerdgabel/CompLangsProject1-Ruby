@@ -62,7 +62,18 @@ def binary_search(words, word, low = 0, high = words.length - 1)
 end
 
 def wordsort(words)
-  
+  words.each_index do |i|
+    next if i.zero?
+
+    j = i - 1
+    word = words[i]
+    pos = binary_search words, word, 0, j
+    while j >= pos
+      words[j + 1] = words[j]
+      j -= 1
+    end
+    words[j + 1] = word
+  end
 end
 
 def main
