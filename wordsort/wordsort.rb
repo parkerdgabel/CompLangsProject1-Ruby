@@ -1,25 +1,61 @@
 # frozen_string_literal: true
-#! /usr/bin/env ruby
 
+# ! /usr/bin/env ruby
+#
+
+# Checks if a character is a digit
+#
+# @param [String] char the character to check
+#
+# @return [Boolean] true if the character is a digit false otherwise
+#
 def is_digit(char)
   char.match?(/[0-9]/)
 end
 
+#
+# Checks if a character is alphabetic
+#
+# @param [String] char the character to check
+#
+# @return [Boolean] true if the character is alphabetic false otherwise
+#
 def is_alpha(char)
   char.match?(/[a-zA-Z]/)
 end
 
+#
+# Checks if a word has a valid start as defined by the spec
+#
+# @param [String] word The word to check
+#
+# @return [Boolean] true if the word has a valid start false otherwise
+#
 def is_valid_start(word)
   is_alpha(word[0]) || is_digit(word[0])
 end
 
+#
+# Checks if a word has a valid middle as defined by the spec
+#
+# @param [String] word The word to check
+#
+# @return [Boolean] true if the word has a valid middle false otherwise
+#
 def is_valid_middle(char)
   is_alpha(char) || is_digit(char) || char == '-'
 end
 
+#
+# Wordifys the input
+#
+# @param [String] words_from_input The words to wordify
+#
+# @return [Arrray] The wordified words
+#
 def wordify(words_from_input)
   words = words_from_input.split(/[\s\(\)!?]/)
-  words = words.select {|word| word != ''}
+  words = words.reject { |word| word == '' }
   final_words = []
   words.each do |word|
     next unless is_valid_start word
@@ -38,6 +74,16 @@ def wordify(words_from_input)
   final_words
 end
 
+#
+# A binary search algorithm
+#
+# @param [Array] words The words array to sort
+# @param [String] word The word to search for
+# @param [Integer] low The lowest index to search
+# @param [Integer] high The highest index to search
+#
+# @return [Integer] The position that the word should have in the array
+#
 def binary_search(words, word, low = 0, high = words.length - 1)
   if low == high
     if words[low] > word
@@ -47,9 +93,7 @@ def binary_search(words, word, low = 0, high = words.length - 1)
     end
   end
 
-  if low > high
-    return low
-  end
+  return low if low > high
 
   mid = (low + high) / 2
   if words[mid] < word
@@ -61,6 +105,11 @@ def binary_search(words, word, low = 0, high = words.length - 1)
   end
 end
 
+#
+# Sorts an array of wordified words inplace using a binary insertion sort
+#
+# @param [Array] words The array of words to sort
+#
 def wordsort(words)
   words.each_index do |i|
     next if i.zero?
@@ -76,12 +125,20 @@ def wordsort(words)
   end
 end
 
+#
+# Main Routine for the program
+#
 def main
   if ARGV.length != 1
     puts 'Wordsort takes a single, required argument containing the text to be sorted.'
-    exit(1)
+    exit 1
+  end
+  unless File.exist?(ARGV[0])
+    puts 'File given does not exist'
+    exit 1
   end
   infile = File.open(ARGV[0])
+
   words_from_input = infile.read
   words = wordify(words_from_input)
   wordsort words
@@ -89,3 +146,4 @@ def main
   File.open(outfile_name + '-sorted.txt', 'w') { |file| file.puts words }
 end
 
+main

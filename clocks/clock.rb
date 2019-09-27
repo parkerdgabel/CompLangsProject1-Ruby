@@ -70,18 +70,40 @@ class Clock
     ]
   }
 
+  #
+  # Constructor for the clock
+  #
+  # @param [Integer] hour The hour to set the clock to
+  # @param [Integer] minute The minute to set the clock to
+  #
   def initialize(hour, minute)
     set_time hour, minute
   end
 
+  #
+  # Getter for hour
+  #
+  # @return [Integer] The current hour set in the clock
+  #
   def get_hour
     @hour
   end
 
+  #
+  # Getter for minutes
+  #
+  # @return [Integer] The current minutes set in the clock
+  #
   def get_minute
     @minutes
   end
 
+  #
+  # Sets the time to the given hour and minute
+  #
+  # @param [Integer] hour The hour to set to
+  # @param [Minute] minute The minute to set to
+  #
   def set_time(hour, minute)
     hour = 0 if hour.negative?
     hour = 23 if hour > 23
@@ -92,6 +114,11 @@ class Clock
     @minutes = time.min
   end
 
+  #
+  # Formats the time as per the spec
+  #
+  # @return [String] The formatted string
+  #
   def format_time
     hours = format_hour @hour
     minutes = format_minute @minutes
@@ -99,10 +126,17 @@ class Clock
     time = ''
     time += hours[0] + minutes[0] + ' ' + ampm[0] + "\n"
     time += hours[1] + minutes[1] + ' ' + ampm[1] + "\n"
-    time += hours[2] + minutes[2] + ' ' + ampm[2] + "\n" + "\n"
+    time += hours[2] + minutes[2] + ' ' + ampm[2] + "\n"
     time
   end
 
+  #
+  # Formats the hour properly
+  #
+  # @param [Integer] hour The hour to format
+  #
+  # @return [Array] An array with the proper values
+  #
   def format_hour(hour)
     first, second = hour.divmod(10)
     first_digit_arr = @@number_strs[first]
@@ -114,7 +148,14 @@ class Clock
     ]
   end
 
-  def format_minute minute
+  #
+  # Formats the minute properly
+  #
+  # @param [Integer] minute The minute to format
+  #
+  # @return [Array] An array with the proper values
+  #
+  def format_minute(minute)
     first, second = minute.divmod(10)
     first_digit_arr = @@number_strs[first]
     second_digit_arr = @@number_strs[second]

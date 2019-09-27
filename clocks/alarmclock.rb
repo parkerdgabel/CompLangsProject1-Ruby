@@ -1,17 +1,44 @@
-class AlarmClock < Clock
+# frozen_string_literal: true
 
+#
+# AlarmClock implementation using military time.
+#
+class AlarmClock < Clock
+  #
+  # Constructor for the Alarmclock
+  #
+  # @param [Integer] hour The hour to set the clock to
+  # @param [Integer] minute The minute to set the clock to
+  #
   def initialize(hour, minute)
     super(hour, minute)
     set_alarm hour, minute
   end
+
+  #
+  # Getter for alarmhour
+  #
+  # @return [Integer] The current alarmhour set in the clock
+  #
   def get_alarmhour
     @alarm_hour
   end
 
+  #
+  # Getter for alarmminutes
+  #
+  # @return [Integer] The current alarm minutes set in the clock
+  #
   def get_alarm_minute
     @alarm_minutes
   end
 
+  #
+  # Sets the alarm to the given hour and minute
+  #
+  # @param [Integer] hour The hour to set to
+  # @param [Minute] minute The minute to set to
+  #
   def set_alarm(hour, minute)
     hour = 0 if hour.negative?
     hour = 23 if hour > 23
@@ -22,6 +49,11 @@ class AlarmClock < Clock
     @alarm_minutes = time.min
   end
 
+  #
+  # Formats the alarm time as per the spec
+  #
+  # @return [String] The formatted string
+  #
   def format_alarm
     hours = format_hour @alarm_hour
     minutes = format_minute @alarm_minutes

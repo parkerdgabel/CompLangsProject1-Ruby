@@ -11,6 +11,7 @@ group :development do
     gem 'ruby-debug-ide'
     gem 'debase'
     gem 'rcodetools'
+    gem 'yard'
 end
 
 group :test do
